@@ -50,3 +50,26 @@ class models:
         cursor.execute(sql, valor)
         conexao.commit()
         cursor.close()
+
+    def alterardadosmanga(capa, nome, data, status, nota, sinopse, id_manga):
+        data = datetime.strptime(data, '%d/%m/%Y').date()
+        cursor = conexao.cursor()
+        sql = "UPDATE manga set capa = %s, nome = %s, data = %s, status = %s, nota = %s, sinopse = %s WHERE id_manga = %s"
+        valor = (capa, nome, data, status, nota, sinopse, id_manga)
+        cursor.execute(sql, valor)
+        conexao.commit()
+        cursor.close()
+
+    def deletarmanga(id_manga):
+        cursor = conexao.cursor()
+        cursor.execute("DELETE FROM manga WHERE id_manga = "+ str(id_manga) +"")
+        conexao.commit()
+        cursor.close()
+
+    def pegatodososmanga(self):
+        cursor = conexao.cursor()
+        cursor.execute("SELECT * FROM manga ORDER BY nome")
+        resultado = cursor.fetchall()
+        cursor.close()
+        return resultado
+

@@ -12,7 +12,16 @@ class On(Resource):
         models.criabancodedados(self)
         return {'status':'online'}
 
+class Mbusca(Resource):
+    pass
+
 class Manga(Resource):
+
+    def get(self):
+        todos = models.pegatodososmanga(self)
+        for x in todos:
+            return {'resultado': str(todos)}
+
     def post(self):
         dados = request.json
         nome = dados['nome']
@@ -23,6 +32,24 @@ class Manga(Resource):
         sinopse = dados['sinopse']
         models.cadastromanga(capa, nome,data,status,nota,sinopse)
         return {'foi': 'sim'}
+    def put(self):
+        dados = request.json
+        nome = dados['nome']
+        capa = dados['capa']
+        data = dados['data']
+        status = dados['status']
+        nota = dados['nota']
+        id_manga = dados['id_manga']
+        sinopse = dados['sinopse']
+        models.alterardadosmanga(capa, nome, data, status, nota, sinopse, id_manga)
+        return {'foi': 'sim'}
+
+    def delete(self):
+        dados = request.json
+        id_manga = dados['id_manga']
+        models.deletarmanga(id_manga)
+        return {'foi': 'sim'}
+
 
 class Adm(Resource):
     def post(self):
@@ -47,6 +74,7 @@ api.add_resource(On, '/')
 api.add_resource(Adm, '/adm')
 api.add_resource(User, '/user')
 api.add_resource(Manga, '/manga')
+api.add_resource(Mbusca, '/busca')
 
 if __name__ == '__main__':
     #port = int(os.environ.get("PORT", 5000))
